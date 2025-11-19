@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🩸 User Dashboard | Blood Bank</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
+    }
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(90deg, #ff4b2b, #ff416c);
+    }
+    .navbar-brand {
+      font-weight: 600;
+      color: white !important;
+      font-size: 1.25rem;
+    }
+    .btn-outline-light {
+      border-radius: 25px;
+    }
+    .btn-nav {
+      border-radius: 25px;
+      background-color: #fff;
+      color: #ff416c;
+      border: none;
+      padding: 5px 15px;
+      transition: 0.3s;
+      font-weight: 500;
+    }
+    .btn-nav:hover {
+      background-color: #ffefef;
+      transform: translateY(-1px);
+    }
+
+    /* Cards */
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .summary-card h6 {
+      color: #6c757d;
+    }
+    .summary-card p {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    /* Table */
+    .table th {
+      background-color: #ffe6e6;
+      color: #c1121f;
+    }
+
+    /* Notifications */
+    .notification-box {
+      max-height: 250px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar px-4 py-2 shadow-sm d-flex justify-content-between align-items-center">
+    <a class="navbar-brand" href="/user_dashboard">🩸 Blood Bank</a>
+    <div>
+      <a href="/profile" class="btn btn-nav me-2">👤 Profile</a>
+      <a href="/donate" class="btn btn-nav me-2">❤️ Donate Blood</a>
+      <a href="/request_blood" class="btn btn-nav me-3">🩸 Request Blood</a>
+      <a href="/logout" class="btn btn-outline-light btn-sm rounded-pill">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <!-- Welcome Message -->
+    <div class="text-center mb-4">
+      <h3 class="fw-bold text-danger">Welcome, {{ user_name }}!</h3>
+      <p class="text-muted">Track your donations, requests, and updates from the blood bank.</p>
+    </div>
+
+    <!-- Flash Message -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-info text-center shadow-sm">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Summary Cards -->
+    <div class="row text-center mb-4">
+      {% set stats = [
+        ('💉 Blood Group', user_blood_group, 'text-danger'),
+        ('🩸 Total Donations', total_donations, 'text-success'),
+        ('📅 Last Donation', last_donation, 'text-primary'),
+        ('📦 Total Units Donated', total_units, 'text-warning')
+      ] %}
+      {% for label, value, color in stats %}
+      <div class="col-md-3 mb-3">
+        <div class="card p-3 summary-card">
+          <h6>{{ label }}</h6>
+          <p class="{{ color }}">{{ value }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="row">
+      <!-- Donation History Chart -->
+      <div class="col-lg-6 mb-4">
+        <div class="card p-4">
+          <h5 class="text-danger fw-semibold mb-3">📊 Donation History</h5>
+          <canvas id="donationChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Recent Requests -->
+      <div class="col-lg-6 mb-4">
+        <div class="card p-4">
+          <h5 class="text-danger fw-semibold mb-3">📋 Recent Blood Requests</h5>
+          <table class="table table-striped text-center align-middle">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Blood Group</th>
+                <th>Units (ml)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if user_requests %}
+                {% for req in user_requests %}
+                <tr>
+                  <td>{{ req[0] }}</td>
+                  <td>{{ req[1] }}</td>
+                  <td>{{ req[2] }}</td>
+                  <td>
+                    <span class="badge 
+                      {% if req[3] == 'Fulfilled' %}bg-success
+                      {% elif req[3] == 'Pending' %}bg-warning text-dark
+                      {% else %}bg-danger{% endif %}">
+                      {{ req[3] }}
+                    </span>
+                  </td>
+                </tr>
+                {% endfor %}
+              {% else %}
+                <tr><td colspan="4" class="text-muted">No requests yet.</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="card shadow-sm p-4 mb-4">
+      <h5 class="text-danger fw-semibold mb-3">🔔 Latest Notifications</h5>
+      <div class="notification-box">
+        {% if notifications %}
+          {% for note in notifications %}
+          <div class="alert alert-light border-start border-danger py-2 mb-2">
+            <strong>{{ note[0] }}</strong><br>
+            <small>{{ note[1] }}</small><br>
+            <small class="text-muted">{{ note[2] }}</small>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-center text-muted">No notifications yet.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- 🏕️ User Camp Participation -->
+    <div class="card shadow-sm p-4 mt-4">
+      <h5 class="text-danger fw-semibold mb-3">🏕️ Your Blood Donation Camps</h5>
+      <table class="table table-striped text-center align-middle">
+        <thead>
+          <tr>
+            <th>Camp Name</th>
+            <th>Location</th>
+            <th>Date</th>
+            <th>Total Donors</th>
+            <th>Total Units (ml)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if user_camps %}
+            {% for camp in user_camps %}
+            <tr>
+              <td>{{ camp[0] }}</td>
+              <td>{{ camp[1] }}</td>
+              <td>{{ camp[2] }}</td>
+              <td>{{ camp[3] }}</td>
+              <td>{{ camp[4] }}</td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr><td colspan="5" class="text-muted">No camp participation yet.</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Chart Script -->
+  <script>
+    const ctx = document.getElementById('donationChart');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: {{ donation_dates|safe }},
+        datasets: [{
+          label: 'Units Donated (ml)',
+          data: {{ donation_values|safe }},
+          backgroundColor: '#ff4b2b'
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  </script>
+
+</body>
+</html>

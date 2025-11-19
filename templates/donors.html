@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🩸 Donor Registration | Blood Bank</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
+    }
+    .navbar {
+      background: linear-gradient(90deg, #ff4b2b, #ff416c);
+    }
+    .navbar-brand {
+      color: #fff !important;
+      font-weight: 600;
+    }
+    .btn-danger {
+      background: linear-gradient(90deg, #ff4b2b, #ff416c);
+      border: none;
+      border-radius: 25px;
+      font-weight: 500;
+    }
+    .btn-danger:hover {
+      background: linear-gradient(90deg, #ff416c, #ff4b2b);
+    }
+    .btn-dark {
+      border-radius: 25px;
+    }
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #d90429;
+      font-weight: 700;
+    }
+    .table thead {
+      background: #ffe6e6;
+      color: #d90429;
+      font-weight: 600;
+    }
+    .alert {
+      border-radius: 8px;
+      font-weight: 500;
+    }
+    .badge {
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar px-4 py-2 shadow-sm d-flex justify-content-between align-items-center">
+    <a href="/admin_dashboard" class="navbar-brand fs-5">🩸 Blood Bank Admin</a>
+    <div>
+      <a href="/admin_dashboard" class="btn btn-dark btn-sm me-2">⬅ Back</a>
+      <a href="/logout" class="btn btn-outline-light btn-sm rounded-pill">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h2 class="text-center mb-4">🧑‍🤝‍🧑 Donor Registration</h2>
+
+    <!-- Flash message -->
+    {% if message %}
+    <div class="alert {% if 'exists' in message %}alert-warning{% else %}alert-success{% endif %} text-center shadow-sm">
+      {{ message }}
+    </div>
+    {% endif %}
+
+    <!-- Registration Form -->
+    <div class="card p-4 mb-5 mx-auto" style="max-width: 650px;">
+      <h5 class="fw-semibold text-danger mb-3">Add New Donor</h5>
+      <form method="POST" action="/donors">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <input class="form-control" name="name" placeholder="Full Name" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <input class="form-control" name="blood_group" placeholder="Blood Group (e.g. O+)" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <input class="form-control" name="contact" placeholder="Contact Number">
+          </div>
+          <div class="col-md-6 mb-3">
+            <input class="form-control" name="city" placeholder="City">
+          </div>
+          <div class="col-md-6 mb-3">
+            <input class="form-control" name="aadhaar" placeholder="Aadhaar Number" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <!-- ✅ Optional: Assign to Camp -->
+            <select class="form-select" name="camp_location">
+              <option value="">-- Assign Camp (optional) --</option>
+              {% if camps %}
+                {% for camp in camps %}
+                  <option value="{{ camp[1] }}">{{ camp[0] }} — {{ camp[1] }}</option>
+                {% endfor %}
+              {% else %}
+                <option disabled>No camps available</option>
+              {% endif %}
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-danger w-100">➕ Add Donor</button>
+      </form>
+    </div>
+
+    <!-- Registered Donors Table -->
+    <div class="card shadow-sm p-4">
+      <h5 class="text-danger fw-bold mb-3">📋 Registered Donors</h5>
+      <table class="table table-hover align-middle text-center">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Blood Group</th>
+            <th>Contact</th>
+            <th>City</th>
+            <th>Aadhaar</th>
+            <th>Camp/Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if donors %}
+            {% for d in donors %}
+            <tr>
+              <td>{{ d[0] }}</td> <!-- donor_id -->
+              <td>{{ d[1] }}</td> <!-- name -->
+              <td><span class="badge bg-danger">{{ d[2] }}</span></td> <!-- blood_group -->
+              <td>{{ d[3] or '-' }}</td> <!-- contact -->
+              <td>{{ d[4] or '-' }}</td> <!-- city -->
+              <td>{{ d[5] or '-' }}</td> <!-- aadhaar -->
+              <td>{{ d[6] or '-' }}</td> <!-- camp_location -->
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr><td colspan="7" class="text-muted">No donors registered yet.</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

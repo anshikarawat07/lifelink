@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📋 Blood Requests Panel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background: #f8f9fa; font-family: 'Poppins', sans-serif; }
+
+    .navbar {
+      background: linear-gradient(90deg, #ff4b2b, #ff416c);
+    }
+
+    .navbar-brand {
+      color: white !important;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .badge {
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+    }
+
+    .badge.bg-success { background-color: #28a745 !important; }
+    .badge.bg-warning { background-color: #ffc107 !important; color: #212529; }
+    .badge.bg-danger { background-color: #dc3545 !important; }
+
+    .btn-danger {
+      background-color: #ff4b2b;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .btn-danger:hover {
+      background-color: #ff416c;
+      transform: scale(1.03);
+    }
+
+    table th {
+      background-color: #ff416c;
+      color: white;
+    }
+
+    .table-hover tbody tr:hover {
+      background-color: #fff5f5;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar px-4 py-2 shadow-sm d-flex justify-content-between align-items-center">
+    <a href="/admin_dashboard" class="navbar-brand">🩸 Blood Bank </a>
+    <div>
+      <a href="/admin_dashboard" class="btn btn-dark btn-sm me-2">⬅ Back</a>
+      <a href="/logout" class="btn btn-outline-light btn-sm rounded-pill">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h2 class="text-center text-danger fw-bold mb-4">📋 Manage Blood Requests</h2>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-info text-center shadow-sm">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Add Request Form -->
+    <div class="card p-4 mb-4 mx-auto" style="max-width: 600px;">
+      <h5 class="fw-bold text-danger mb-3">➕ Add New Request</h5>
+      <form method="POST" action="/requests">
+        <input class="form-control mb-3" type="number" name="recipient_id" placeholder="Recipient ID" required>
+        <input class="form-control mb-3" type="number" name="req_units" placeholder="Required Units (ml)" required>
+        <button class="btn btn-danger w-100">Add Request</button>
+      </form>
+    </div>
+
+    <!-- Requests Table -->
+    <div class="card shadow-sm p-4">
+      <h5 class="text-danger fw-bold mb-3">🩸 All Blood Requests</h5>
+      <table class="table table-hover text-center align-middle">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Recipient Name</th>
+            <th>Blood Group</th>
+            <th>Requested (ml)</th>
+            <th>Fulfilled (ml)</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if requests %}
+            {% for r in requests %}
+              <tr>
+                <td>{{ r[0] }}</td>
+                <td>{{ r[1] }}</td>
+                <td>{{ r[2] }}</td>
+                <td>{{ r[3] }}</td>
+                <td>{{ r[4] }}</td>
+                <td>
+                  <span class="badge 
+                    {% if r[5] == 'Fulfilled' %}bg-success
+                    {% elif r[5] == 'Partially Fulfilled' %}bg-warning
+                    {% else %}bg-danger{% endif %}">
+                    {{ r[5] }}
+                  </span>
+                </td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr><td colspan="6" class="text-muted">No requests yet.</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer class="text-center">&copy; 2025 Blood Bank Management System | Admin Panel</footer>
+</body>
+</html>

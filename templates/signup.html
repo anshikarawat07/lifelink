@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up | Blood Bank</title>
+
+  <!-- Load external CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="auth-body">
+
+  <!-- Signup Container -->
+  <div class="auth-container">
+    <h2>🩸 Create Account</h2>
+
+    <!-- Flash messages (errors/success) -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for msg in messages %}
+            <p>{{ msg }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Signup Form -->
+    <form method="post" class="auth-form">
+
+      <!-- Username -->
+      <div class="input-group">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Choose a username" required>
+      </div>
+
+      <!-- Password -->
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Create a password" required>
+      </div>
+
+      <!-- Role Selection -->
+      <div class="input-group">
+        <label>Role</label>
+        <select name="role" required>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary">Sign Up</button>
+    </form>
+
+    <!-- Switch to Login -->
+    <p class="switch-link">Already registered? <a href="/login">Login here</a></p>
+  </div>
+
+</body>
+</html>

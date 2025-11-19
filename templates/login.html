@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | Blood Bank</title>
+
+  <!-- Load external stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="auth-body">
+
+  <!-- Login Box -->
+  <div class="auth-container">
+    <h2>🩸 Blood Bank Login</h2>
+
+    <!-- Flash messages (errors/success) -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for msg in messages %}
+            <p>{{ msg }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Login Form -->
+    <form method="post" class="auth-form">
+
+      <!-- Username field -->
+      <div class="input-group">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter your username" required>
+      </div>
+
+      <!-- Password field -->
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter your password" required>
+      </div>
+
+      <!-- Login button -->
+      <button type="submit" class="btn-primary">Login</button>
+    </form>
+
+    <!-- Switch to Signup -->
+    <p class="switch-link">Don’t have an account? <a href="/signup">Sign up</a></p>
+  </div>
+
+</body>
+</html>

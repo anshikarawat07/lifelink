@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🩸 LifeLink | Donate Blood, Save Lives</title>
+
+  <!-- Bootstrap & Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --crimson: #b22222;        /* deep red accent */
+      --rose: #e66060;           /* warm highlight red */
+      --charcoal: #1b1b1b;       /* deep contrast tone */
+      --soft-white: #f7f7f7;     /* text panels */
+      --glass-bg: rgba(255, 255, 255, 0.12);
+      --card-bg: rgba(255, 255, 255, 0.2);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--soft-white);
+      background: radial-gradient(circle at 20% 20%, #c94040, var(--crimson) 45%, var(--charcoal) 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(90deg, var(--crimson), var(--rose));
+      box-shadow: 0 4px 25px rgba(0,0,0,0.3);
+    }
+    .navbar-brand {
+      color: #fff !important;
+      font-weight: 700;
+      font-size: 1.6rem;
+    }
+    .nav-link {
+      color: #fff !important;
+      font-weight: 500;
+      margin-right: 15px;
+      transition: 0.3s;
+    }
+    .nav-link:hover {
+      color: #ffdede !important;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
+                  url('https://myshpl.com/website-assets/images/blood-donation.jpg') center/cover no-repeat;
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      position: relative;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+    }
+    .hero h1 {
+      font-weight: 700;
+      font-size: 3.2rem;
+      color: #fff;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: #ffe6e6;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Sections */
+    section {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 6px 25px rgba(0,0,0,0.35);
+      padding: 45px;
+      margin: 60px auto;
+      max-width: 1100px;
+      color: #fff;
+    }
+
+    section h2 {
+      color: #ffbebe;
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: 700;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+    section p {
+      text-align: justify;
+      color: #f8eaea;
+      line-height: 1.8;
+    }
+
+    /* Why Donate Grid */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+    .why-item {
+      background: var(--card-bg);
+      border-left: 5px solid var(--rose);
+      border-radius: 10px;
+      padding: 20px;
+      transition: 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .why-item:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    }
+    .why-item strong {
+      color: #ffd6d6;
+      font-size: 1.1rem;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      margin-top: 25px;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 14px;
+      text-align: center;
+      color: #fff;
+    }
+    th {
+      background: rgba(255, 255, 255, 0.2);
+      font-weight: 600;
+    }
+    td {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    tr:nth-child(even) td {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(0,0,0,0.5);
+      color: #ffcccc;
+      text-align: center;
+      padding: 25px;
+      margin-top: 60px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.3rem; }
+      section { padding: 30px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">🩸 LifeLink</a>
+      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="/signup">Signup</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome To LifeLink</h1>
+      <p>Connecting donors, hospitals, and hope — because every drop counts.</p>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section>
+    <h2>About LifeLink</h2>
+    <p><strong>LifeLink</strong> bridges donors, hospitals, and patients so no life is lost due to lack of blood. Be a part of our mission and give hope to those in need.</p>
+  </section>
+
+  <!-- Why Donate -->
+  <section>
+    <h2>Why Donate Blood?</h2>
+    <div class="why-grid">
+      <div class="why-item"><strong>🩸 Save Lives</strong><p>Each donation can save up to three people. Your gift gives life and hope.</p></div>
+      <div class="why-item"><strong>❤️ Stay Healthy</strong><p>Donating blood helps balance iron levels and improves overall health.</p></div>
+      <div class="why-item"><strong>🤝 Build Community</strong><p>Every donor is a hero — together we build a compassionate society.</p></div>
+      <div class="why-item"><strong>🔬 Free Health Check</strong><p>Every donation includes a health screening that benefits you and others.</p></div>
+    </div>
+  </section>
+
+  <!-- Donation Interval -->
+  <section>
+    <h2>When Can You Donate Again?</h2>
+    <table>
+      <thead>
+        <tr><th>Donation Type</th><th>Recommended Interval</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Whole Blood (General)</td><td>Every 56 days (8 weeks)</td></tr>
+        <tr><td>Whole Blood (India)</td><td>Every 90 days (males) / 120 days (females)</td></tr>
+        <tr><td>Platelets (Apheresis)</td><td>Every 7 days (up to 24 times per year)</td></tr>
+        <tr><td>Plasma Donation</td><td>Every 2–4 weeks</td></tr>
+      </tbody>
+    </table>
+    <p class="text-center mt-3">⚠️ Always confirm donation intervals with your local blood bank.</p>
+  </section>
+
+  <footer>
+    <p>© 2025 LifeLink | Together, we save lives 🩸</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
